@@ -1,8 +1,8 @@
-package com.hazyaz.FlightPulse360.model;
+package com.hazyaz.FlightPulse360.model.TS;
 
 import java.util.List;
 
-public class Fuel {
+public class FuelService {
 
     private String fl_Id;
     private String fl_quantity;

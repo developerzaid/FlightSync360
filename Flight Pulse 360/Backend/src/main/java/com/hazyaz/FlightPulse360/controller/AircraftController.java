@@ -2,27 +2,52 @@ package com.hazyaz.FlightPulse360.controller;
 
 import com.hazyaz.FlightPulse360.dto.UserLogin;
 import com.hazyaz.FlightPulse360.model.Aircraft;
+import com.hazyaz.FlightPulse360.service.AircraftService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
+import org.xml.sax.EntityResolver;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class AircraftController {
 
+    @Autowired
+    AircraftService aircraftService;
+
 
     @Operation(tags = "ET: Aircraft" ,description = "Allows the user to add new aircraft")
     @PostMapping("/add-aircraft")
-    public String add_aircraft(@RequestBody Aircraft aircraft){
-        return "This is a login screen";
+    public Aircraft add_aircraft(@RequestBody Aircraft aircraft){
+        aircraftService.addAircraft(aircraft);
+        return aircraft;
     }
 
     @Operation(tags = "ET: Aircraft" ,description = "Allows the user to see all the aircraft")
     @GetMapping("/all-aircraft")
-    public String all_aircraft(){
-        return "This is a login screen";
+    public ResponseEntity<List<Aircraft>> all_aircraft(){
+
+        return ResponseEntity.ok(aircraftService.getAllAircraft());
     }
+
+    @Operation(tags = "ET: Aircraft" ,description = "Allows the update aircraft")
+    @PutMapping("/update-aircraft/{id}")
+    public ResponseEntity<Aircraft> update_aircraft(@PathVariable String id, @RequestBody Map<String,Object> updates){
+        return ResponseEntity.ok(aircraftService.updateAircraft(id, updates));
+    }
+
+
+    @Operation(tags = "ET: Aircraft" ,description = "Allows the Delete aircraft")
+    @DeleteMapping("/delete-aircraft/{id}")
+    public ResponseEntity<String> delete_aircraft(@PathVariable String id){
+        return ResponseEntity.ok(aircraftService.deleteAircraft(id));
+    }
+
+
 
 
 

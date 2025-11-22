@@ -1,6 +1,15 @@
 package com.hazyaz.FlightPulse360.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.Data;
+
+@Data
+@Entity
 public class Client {
+
+    @Id
+    private String ct_id;
 
     private String ct_name;
     private String ct_company;
