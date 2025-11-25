@@ -33,6 +33,11 @@ public class AircraftController {
         return ResponseEntity.ok(aircraftService.getAllAircraft(companyId));
     }
 
+    @Operation(tags = "ET: Aircraft" ,description = "Allows to get single aircraft")
+    @PutMapping("/aircraft/{id}")
+    public ResponseEntity<Aircraft> get_Single_aircraft(@PathVariable String id){
+        return ResponseEntity.ok(aircraftService.getSingleAircraft(id));
+    }
     @Operation(tags = "ET: Aircraft" ,description = "Allows the update aircraft")
     @PutMapping("/update-aircraft/{id}")
     public ResponseEntity<Aircraft> update_aircraft(@PathVariable String id, @RequestBody Map<String,Object> updates){

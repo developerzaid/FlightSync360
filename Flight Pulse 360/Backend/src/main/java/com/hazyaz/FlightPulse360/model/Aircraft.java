@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
+
 @Data
 @Entity
 public class Aircraft {
@@ -13,7 +15,7 @@ public class Aircraft {
     @Id
     @GeneratedValue(generator = "Id-Generator")
     @GenericGenerator(name = "Id-Generator", strategy = "com.hazyaz.FlightPulse360.util.UniqueIdGenerator")
-    private String ac_Id;
+    private String acId;
 
 
     private String uxUniversalCompanyId;
@@ -41,7 +43,7 @@ public class Aircraft {
     private String ac_Notes;
 
 //    figure out a way to store all the list of documents
-    private String ac_documents;
+    private List<String> ac_documents;
 
 //    Main link with the user
 
@@ -51,11 +53,11 @@ public class Aircraft {
     }
 
     public String getAc_Id() {
-        return ac_Id;
+        return acId;
     }
 
     public void setAc_Id(String ac_Id) {
-        this.ac_Id = ac_Id;
+        this.acId = ac_Id;
     }
 
     public String getAc_TailNo() {
@@ -178,11 +180,11 @@ public class Aircraft {
         this.ac_Notes = ac_Notes;
     }
 
-    public String getAc_documents() {
+    public List<String> getAc_documents() {
         return ac_documents;
     }
 
-    public void setAc_documents(String ac_documents) {
+    public void setAc_documents(List<String> ac_documents) {
         this.ac_documents = ac_documents;
     }
 

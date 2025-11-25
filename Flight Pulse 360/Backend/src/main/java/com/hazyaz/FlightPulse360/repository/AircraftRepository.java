@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface AircraftRepository extends JpaRepository<Aircraft, String> {
 
-
+    Aircraft findByAcId(String acId);
     List<Aircraft> findAllByUxUniversalCompanyId(String companyId);
 //    Add custom method later when needed
 }

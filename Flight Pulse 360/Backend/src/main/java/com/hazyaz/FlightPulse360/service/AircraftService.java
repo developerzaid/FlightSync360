@@ -30,6 +30,10 @@ public class AircraftService{
         return aircraftRepository.findAllByUxUniversalCompanyId(CompanyId);
     }
 
+    public Aircraft getSingleAircraft(String id){
+        return aircraftRepository.findByAcId(id);
+    }
+
     public Aircraft updateAircraft(String id, Map<String,Object> updates){
         Aircraft existingAircraft = aircraftRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Aircraft not found"));

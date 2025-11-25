@@ -24,7 +24,7 @@ public class Client {
     private String ct_country;
     private String ct_city;
     private String ct_address;
-    private String ct_role; // PASSENGER | COMPANY | OTHERS
+    private String ct_role; //COMPANY | OTHERS
 
 //    If the client is a company
     private String ct_taxId;
