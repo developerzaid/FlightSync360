@@ -1,255 +1,496 @@
-import React, { useState } from "react";
-import { X, Edit, FileText, Wrench, File } from "lucide-react";
+import React from "react";
+import {
+	X,
+	Edit,
+	MapPin,
+	Calendar,
+	Users,
+	Settings,
+	Clock,
+	DollarSign,
+	FileText,
+	Package,
+	User,
+	Plane as PlaneIcon,
+} from "lucide-react";
 
-const TripDetails = ({ isOpen, onClose, trip, onEdit }) => {
-	const [activeTab, setActiveTab] = useState("overview");
+const TripDetails = ({ trip, onClose, onEdit }) => {
+	if (!trip) return null;
 
-	if (!isOpen || !trip) return null;
-
-	const getStatusBadge = (status) => {
+	const getStatusColor = (status) => {
 		const colors = {
-			DRAFT: "bg-gray-100 text-gray-700",
-			PLANNED: "bg-blue-100 text-blue-700",
-			CONFIRMED: "bg-green-100 text-green-700",
-			IN_PROGRESS: "bg-orange-100 text-orange-700",
-			COMPLETED: "bg-purple-100 text-purple-700",
-			CANCELLED: "bg-red-100 text-red-700",
+			confirmed: "bg-green-500",
+			"in-progress": "bg-blue-500",
+			pending: "bg-orange-500",
+			completed: "bg-gray-500",
+			cancelled: "bg-red-500",
 		};
-		return (
-			<span
-				className={`px-2 py-0.5 rounded text-xs font-semibold ${
-					colors[status] || colors.DRAFT
-				}`}
-			>
-				{status}
-			</span>
-		);
+		return colors[status] || "bg-gray-500";
 	};
 
-	const InfoRow = ({ label, value }) => (
-		<div className="flex items-center py-1.5 border-b border-gray-200">
-			<span className="text-xs text-gray-600 w-32 flex-shrink-0">{label}</span>
-			<span className="text-xs font-semibold text-gray-900">
-				{value || "-"}
-			</span>
-		</div>
-	);
+	const getServiceStatusBadge = (status) => {
+		const badges = {
+			requested: "bg-gray-100 text-gray-700",
+			quoted: "bg-blue-100 text-blue-700",
+			confirmed: "bg-green-100 text-green-700",
+			processing: "bg-yellow-100 text-yellow-700",
+			"in-progress": "bg-indigo-100 text-indigo-700",
+			completed: "bg-green-100 text-green-700",
+			"ready-for-invoice": "bg-purple-100 text-purple-700",
+			invoiced: "bg-orange-100 text-orange-700",
+			paid: "bg-green-100 text-green-700",
+			cancelled: "bg-red-100 text-red-700",
+		};
+		return badges[status] || badges.requested;
+	};
 
 	return (
-		<div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center overflow-y-auto py-4">
-			<div className="w-full max-w-5xl bg-white rounded-lg shadow-2xl mx-4">
+		<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+			<div className="bg-white rounded-xl shadow-2xl max-w-7xl w-full max-h-[90vh] overflow-y-auto">
 				{/* Header */}
-				<div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-2 flex items-center justify-between">
+				<div className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 p-5 flex items-center justify-between">
 					<div className="flex items-center gap-3">
-						<h2 className="text-lg font-bold text-white">
-							{trip.mt_tripNumber || trip.uxTripId}
-						</h2>
-						{getStatusBadge(trip.mt_status)}
-						<span className="text-sm text-white">
-							{trip.mt_fromAirport} → {trip.mt_toAirport}
-						</span>
+						<div className="p-2 bg-white/20 rounded-lg">
+							<MapPin className="w-6 h-6 text-white" />
+						</div>
+						<div>
+							<h2 className="text-lg font-bold text-white">
+								{trip.tripNumber} | {trip.flightNumber}
+							</h2>
+							<p className="text-sm text-blue-100">{trip.purpose}</p>
+						</div>
 					</div>
 					<div className="flex items-center gap-2">
 						<button
-							onClick={onEdit}
-							className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded text-white text-sm flex items-center gap-1"
+							onClick={() => onEdit(trip)}
+							className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg text-sm flex items-center gap-2"
 						>
-							<Edit className="w-3 h-3" />
+							<Edit className="w-4 h-4" />
 							Edit
 						</button>
 						<button
 							onClick={onClose}
-							className="text-white hover:bg-white/20 p-1 rounded"
+							className="p-1.5 hover:bg-white/20 rounded-lg"
 						>
-							<X className="w-5 h-5" />
+							<X className="w-5 h-5 text-white" />
 						</button>
 					</div>
 				</div>
 
-				{/* Tabs */}
-				<div className="bg-gray-100 border-b border-gray-300 flex">
-					{[
-						{ id: "overview", label: "Overview", icon: FileText },
-						{ id: "services", label: "Services", icon: Wrench },
-						{ id: "documents", label: "Documents", icon: File },
-					].map(({ id, label, icon: Icon }) => (
-						<button
-							key={id}
-							onClick={() => setActiveTab(id)}
-							className={`px-4 py-2 text-sm font-semibold flex items-center gap-2 ${
-								activeTab === id
-									? "bg-white text-blue-600 border-b-2 border-blue-600"
-									: "text-gray-600 hover:text-gray-900"
-							}`}
-						>
-							<Icon className="w-4 h-4" />
-							{label}
-						</button>
-					))}
-				</div>
-
 				{/* Content */}
-				<div className="p-4 max-h-[calc(100vh-200px)] overflow-y-auto">
-					{/* Overview Tab */}
-					{activeTab === "overview" && (
-						<div className="grid grid-cols-2 gap-4">
-							{/* Flight Information */}
-							<div className="border border-gray-300 rounded">
-								<div className="bg-gray-100 px-3 py-1.5 border-b border-gray-300">
-									<h3 className="text-sm font-bold text-gray-900">
-										Flight Information
-									</h3>
-								</div>
-								<div className="p-3">
-									<InfoRow label="Trip Type" value={trip.mt_tripType} />
-									<InfoRow label="Purpose" value={trip.mt_purpose} />
-									<InfoRow label="Status" value={trip.mt_status} />
-									<InfoRow label="From Airport" value={trip.mt_fromAirport} />
-									<InfoRow label="To Airport" value={trip.mt_toAirport} />
-								</div>
+				<div className="p-5 space-y-4">
+					{/* Quick Stats */}
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+						<div className="p-3 bg-gray-50 rounded-lg">
+							<p className="text-xs font-medium text-gray-500 mb-1">STATUS</p>
+							<div className="flex items-center gap-2">
+								<div
+									className={`w-2 h-2 rounded-full ${getStatusColor(
+										trip.status
+									)}`}
+								></div>
+								<p className="text-sm font-bold text-gray-900 capitalize">
+									{trip.status}
+								</p>
 							</div>
-
-							{/* Schedule */}
-							<div className="border border-gray-300 rounded">
-								<div className="bg-gray-100 px-3 py-1.5 border-b border-gray-300">
-									<h3 className="text-sm font-bold text-gray-900">Schedule</h3>
-								</div>
-								<div className="p-3">
-									<InfoRow
-										label="Departure (UTC)"
-										value={
-											trip.mt_scheduledDepartureUtc
-												? new Date(
-														trip.mt_scheduledDepartureUtc
-												  ).toLocaleString()
-												: null
-										}
-									/>
-									<InfoRow
-										label="Arrival (UTC)"
-										value={
-											trip.mt_scheduledArrivalUtc
-												? new Date(trip.mt_scheduledArrivalUtc).toLocaleString()
-												: null
-										}
-									/>
-									<InfoRow
-										label="Departure TZ"
-										value={trip.mt_departureTimezone}
-									/>
-									<InfoRow label="Arrival TZ" value={trip.mt_arrivalTimezone} />
-								</div>
-							</div>
-
-							{/* Notes */}
-							{(trip.mt_additionalNotes ||
-								trip.mt_dispatcherNotes ||
-								trip.mt_safetyNotes ||
-								trip.mt_regulatoryNotes) && (
-								<div className="col-span-2 border border-gray-300 rounded">
-									<div className="bg-gray-100 px-3 py-1.5 border-b border-gray-300">
-										<h3 className="text-sm font-bold text-gray-900">Notes</h3>
-									</div>
-									<div className="p-3 space-y-2">
-										{trip.mt_additionalNotes && (
-											<div>
-												<p className="text-xs font-semibold text-gray-700 mb-1">
-													Additional Notes
-												</p>
-												<p className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
-													{trip.mt_additionalNotes}
-												</p>
-											</div>
-										)}
-										{trip.mt_dispatcherNotes && (
-											<div>
-												<p className="text-xs font-semibold text-gray-700 mb-1">
-													Dispatcher Notes
-												</p>
-												<p className="text-xs text-gray-600 bg-blue-50 p-2 rounded">
-													{trip.mt_dispatcherNotes}
-												</p>
-											</div>
-										)}
-										{trip.mt_safetyNotes && (
-											<div>
-												<p className="text-xs font-semibold text-gray-700 mb-1">
-													Safety Notes
-												</p>
-												<p className="text-xs text-gray-600 bg-orange-50 p-2 rounded">
-													{trip.mt_safetyNotes}
-												</p>
-											</div>
-										)}
-										{trip.mt_regulatoryNotes && (
-											<div>
-												<p className="text-xs font-semibold text-gray-700 mb-1">
-													Regulatory Notes
-												</p>
-												<p className="text-xs text-gray-600 bg-purple-50 p-2 rounded">
-													{trip.mt_regulatoryNotes}
-												</p>
-											</div>
-										)}
-									</div>
-								</div>
-							)}
 						</div>
-					)}
-
-					{/* Services Tab */}
-					{activeTab === "services" && (
-						<div className="space-y-3">
-							{trip.services && trip.services.length > 0 ? (
-								trip.services.map((service, index) => (
-									<div key={index} className="border border-gray-300 rounded">
-										<div className="bg-gray-100 px-3 py-1.5 border-b border-gray-300">
-											<h3 className="text-sm font-bold text-gray-900 capitalize">
-												{service.type.replace(/([A-Z])/g, " $1").trim()}
-											</h3>
-										</div>
-										<div className="p-3 grid grid-cols-3 gap-2">
-											{Object.entries(service.details || service)
-												.filter(([key]) => key !== "enabled" && key !== "type")
-												.map(([key, value]) => (
-													<div key={key} className="bg-gray-50 p-2 rounded">
-														<p className="text-xs text-gray-600 mb-0.5">
-															{key
-																.replace(/_/g, " ")
-																.replace(/^\w/, (c) => c.toUpperCase())}
-														</p>
-														<p className="text-xs font-semibold text-gray-900">
-															{value || "-"}
-														</p>
-													</div>
-												))}
-										</div>
-									</div>
-								))
-							) : (
-								<div className="text-center py-12 text-gray-500 text-sm">
-									No services configured for this trip
-								</div>
-							)}
+						<div className="p-3 bg-gray-50 rounded-lg">
+							<p className="text-xs font-medium text-gray-500 mb-1">
+								TRIP TYPE
+							</p>
+							<p className="text-sm font-bold text-gray-900">{trip.tripType}</p>
 						</div>
-					)}
+						<div className="p-3 bg-gray-50 rounded-lg">
+							<p className="text-xs font-medium text-gray-500 mb-1">DATE</p>
+							<p className="text-sm font-bold text-gray-900">
+								{new Date(trip.scheduledDeparture).toLocaleDateString()}
+							</p>
+						</div>
+						<div className="p-3 bg-gray-50 rounded-lg">
+							<p className="text-xs font-medium text-gray-500 mb-1">DURATION</p>
+							<p className="text-sm font-bold text-gray-900">{trip.duration}</p>
+						</div>
+					</div>
 
-					{/* Documents Tab */}
-					{activeTab === "documents" && (
-						<div>
-							{trip.mt_additionalDocuments ? (
-								<div className="border border-gray-300 rounded p-3">
-									<p className="text-xs text-gray-600">
-										{trip.mt_additionalDocuments}
+					{/* Flight Route */}
+					<div className="bg-white border-2 border-blue-200 rounded-xl p-4">
+						<h3 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+							<MapPin className="w-5 h-5 text-blue-600" />
+							Flight Route
+						</h3>
+						<div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+							<div className="grid md:grid-cols-2 gap-4">
+								<div>
+									<p className="text-xs font-medium text-gray-500 mb-1">
+										DEPARTURE
+									</p>
+									<p className="text-2xl font-bold text-gray-900">
+										{trip.fromAirport}
+									</p>
+									<p className="text-sm text-gray-600 mt-1">
+										{new Date(trip.scheduledDeparture).toLocaleString("en-US", {
+											month: "short",
+											day: "numeric",
+											year: "numeric",
+											hour: "2-digit",
+											minute: "2-digit",
+										})}
 									</p>
 								</div>
-							) : (
-								<div className="text-center py-12 text-gray-500 text-sm">
-									No documents attached to this trip
+								<div>
+									<p className="text-xs font-medium text-gray-500 mb-1">
+										ARRIVAL
+									</p>
+									<p className="text-2xl font-bold text-gray-900">
+										{trip.toAirport}
+									</p>
+									<p className="text-sm text-gray-600 mt-1">
+										{new Date(trip.scheduledArrival).toLocaleString("en-US", {
+											month: "short",
+											day: "numeric",
+											year: "numeric",
+											hour: "2-digit",
+											minute: "2-digit",
+										})}
+									</p>
 								</div>
-							)}
+							</div>
+						</div>
+					</div>
+
+					{/* CLIENT DETAILS - EXPANDED */}
+					<div className="bg-white border-2 border-gray-300 rounded-xl p-4">
+						<h3 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+							<User className="w-5 h-5 text-blue-600" />
+							Client Details
+						</h3>
+						<div className="grid md:grid-cols-3 gap-3 text-sm">
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Company Name
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.client.name}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">Client Type</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.client.type}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Account Number
+								</p>
+								<p className="text-sm font-mono font-bold text-gray-900">
+									{trip.client.accountNumber}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Primary Contact
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.client.primaryContact}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">Phone</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.client.phone}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">Email</p>
+								<p className="text-sm font-bold text-blue-600">
+									{trip.client.email}
+								</p>
+							</div>
+							<div className="md:col-span-3">
+								<p className="text-xs font-medium text-gray-500">
+									Billing Address
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.client.billingAddress}
+								</p>
+							</div>
+						</div>
+					</div>
+
+					{/* AIRCRAFT DETAILS - EXPANDED */}
+					<div className="bg-white border-2 border-gray-300 rounded-xl p-4">
+						<h3 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+							<PlaneIcon className="w-5 h-5 text-blue-600" />
+							Aircraft Details
+						</h3>
+						<div className="grid md:grid-cols-4 gap-3 text-sm">
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Registration
+								</p>
+								<p className="text-base font-mono font-bold text-gray-900">
+									{trip.aircraft.registration}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Aircraft Type
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.aircraft.type}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Manufacturer
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.aircraft.manufacturer}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">Year</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.aircraft.yearOfManufacture}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Max Passengers
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.aircraft.maxPassengers}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">Max Range</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.aircraft.maxRange} nm
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">MTOW</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.aircraft.mtow} lbs
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">Home Base</p>
+								<p className="text-sm font-mono font-bold text-gray-900">
+									{trip.aircraft.homeBase}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Owner/Operator
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.aircraft.owner}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Insurance Valid Until
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.aircraft.insuranceValidUntil}
+								</p>
+							</div>
+						</div>
+					</div>
+
+					{/* CREW DETAILS - EXPANDED */}
+					<div className="bg-white border-2 border-gray-300 rounded-xl p-4">
+						<h3 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+							<Users className="w-5 h-5 text-blue-600" />
+							Crew Details
+						</h3>
+
+						<div className="mb-4">
+							<h4 className="text-sm font-bold text-indigo-900 mb-2">
+								✈️ PILOTS
+							</h4>
+							<div className="grid md:grid-cols-2 gap-2">
+								{trip.crew.pilots.map((pilot, idx) => (
+									<div
+										key={idx}
+										className="p-3 bg-indigo-50 border border-indigo-200 rounded-lg"
+									>
+										<p className="text-sm font-bold text-gray-900">
+											{pilot.name}
+										</p>
+										<div className="grid grid-cols-2 gap-2 mt-1 text-xs text-gray-600">
+											<span>License: {pilot.license}</span>
+											<span>Exp: {pilot.experience}</span>
+											{pilot.typeRating && (
+												<span>Type: {pilot.typeRating}</span>
+											)}
+											{pilot.medicalClass && (
+												<span>Medical: {pilot.medicalClass}</span>
+											)}
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+
+						{trip.crew.flightAttendants.length > 0 && (
+							<div>
+								<h4 className="text-sm font-bold text-purple-900 mb-2">
+									👥 FLIGHT ATTENDANTS
+								</h4>
+								<div className="grid md:grid-cols-2 gap-2">
+									{trip.crew.flightAttendants.map((fa, idx) => (
+										<div
+											key={idx}
+											className="p-3 bg-purple-50 border border-purple-200 rounded-lg"
+										>
+											<p className="text-sm font-bold text-gray-900">
+												{fa.name}
+											</p>
+											<div className="grid grid-cols-2 gap-2 mt-1 text-xs text-gray-600">
+												<span>ID: {fa.employeeId}</span>
+												<span>{fa.position}</span>
+												<span>Exp: {fa.experience}</span>
+												<span>Cert: {fa.certification}</span>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
+					</div>
+
+					{/* PASSENGERS - EXPANDED */}
+					{trip.passengers && trip.passengers.length > 0 && (
+						<div className="bg-white border-2 border-gray-300 rounded-xl p-4">
+							<h3 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+								<Users className="w-5 h-5 text-blue-600" />
+								Passengers ({trip.passengers.length})
+							</h3>
+							<div className="grid md:grid-cols-2 gap-3">
+								{trip.passengers.map((passenger, idx) => (
+									<div
+										key={idx}
+										className="p-3 bg-gray-50 border border-gray-200 rounded-lg"
+									>
+										<p className="text-sm font-bold text-gray-900">
+											{passenger.name}
+										</p>
+										<div className="grid grid-cols-2 gap-2 mt-2 text-xs text-gray-600">
+											{passenger.passportNumber && (
+												<span>Passport: {passenger.passportNumber}</span>
+											)}
+											{passenger.dateOfBirth && (
+												<span>DOB: {passenger.dateOfBirth}</span>
+											)}
+											{passenger.age && <span>Age: {passenger.age} years</span>}
+											{passenger.nationality && (
+												<span>Nationality: {passenger.nationality}</span>
+											)}
+											{passenger.passportExpiry && (
+												<span>Exp: {passenger.passportExpiry}</span>
+											)}
+											{passenger.seatPreference && (
+												<span>Seat: {passenger.seatPreference}</span>
+											)}
+											{passenger.mealPreference && (
+												<span>Meal: {passenger.mealPreference}</span>
+											)}
+										</div>
+									</div>
+								))}
+							</div>
 						</div>
 					)}
+
+					{/* SERVICES - DETAILED WITH STATUS */}
+					<div className="bg-white border-2 border-gray-300 rounded-xl p-4">
+						<h3 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+							<Package className="w-5 h-5 text-blue-600" />
+							Services & Costs
+						</h3>
+						<div className="space-y-3">
+							{trip.services.map((service, idx) => (
+								<div
+									key={idx}
+									className="p-4 border-2 border-blue-200 rounded-lg bg-blue-50"
+								>
+									<div className="flex items-center justify-between mb-2">
+										<h4 className="text-sm font-bold text-gray-900">
+											{service}
+										</h4>
+										<span
+											className={`px-2 py-0.5 rounded-full text-xs font-bold ${getServiceStatusBadge(
+												"confirmed"
+											)}`}
+										>
+											CONFIRMED
+										</span>
+									</div>
+									<div className="grid md:grid-cols-4 gap-2 text-xs">
+										<div>
+											<p className="text-gray-500">Vendor</p>
+											<p className="font-bold text-gray-900">Sample Vendor</p>
+										</div>
+										<div>
+											<p className="text-gray-500">Contact</p>
+											<p className="font-bold text-gray-900">+1-555-0000</p>
+										</div>
+										<div>
+											<p className="text-gray-500">Cost</p>
+											<p className="font-bold text-green-700">$5,000.00</p>
+										</div>
+										<div>
+											<p className="text-gray-500">Documents</p>
+											<p className="font-bold text-blue-600">3 files</p>
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+
+						<div className="mt-4 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
+							<div className="flex items-center justify-between">
+								<span className="text-sm font-bold text-gray-900">
+									TOTAL ESTIMATED COST
+								</span>
+								<span className="text-xl font-bold text-green-700">
+									$20,000.00
+								</span>
+							</div>
+						</div>
+					</div>
+
+					{/* ADDITIONAL INFO */}
+					<div className="bg-gray-50 rounded-xl p-4">
+						<h3 className="text-sm font-bold text-gray-700 mb-3">
+							ADDITIONAL INFORMATION
+						</h3>
+						<div className="grid md:grid-cols-3 gap-3 text-sm">
+							<div>
+								<p className="text-xs font-medium text-gray-500">Created At</p>
+								<p className="text-sm font-bold text-gray-900">
+									{new Date(trip.createdAt).toLocaleString()}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">
+									Last Updated
+								</p>
+								<p className="text-sm font-bold text-gray-900">
+									{new Date(trip.updatedAt || trip.createdAt).toLocaleString()}
+								</p>
+							</div>
+							<div>
+								<p className="text-xs font-medium text-gray-500">Purpose</p>
+								<p className="text-sm font-bold text-gray-900">
+									{trip.purpose}
+								</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

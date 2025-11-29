@@ -1,5 +1,6 @@
 package com.hazyaz.FlightPulse360.model.TS;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ import java.util.List;
 public class FuelService {
 
 
+    @Column(name = "uxTripId", nullable = false)
     private String uxTripId; // Universal Trip ID for
 
     @Id
@@ -24,19 +26,24 @@ public class FuelService {
     }
 
     private String fl_serviceName;
-    private String fl_quantity;
-    private String fl_date;
-    private String fl_time;
-    private String fl_unit;
-    private String fl_upliftQtyLitres;
-    private String fl_usGallons;
-    private String fl_cost;
-
-    private String fl_adrCopy;
 
     private String fl_groundEmail;
     private String fl_groundPhone;
+
     private String fl_type;
+    private String fl_quantity;
+    private String fl_deliveryDate;
+    private String fl_deliveryTime;
+
+    private String fl_unit;
+    private String fl_upliftQtyLitres;
+    private String fl_usGallons;
+    private String fl_currency;
+    private String fl_cost;
+
+    private String fl_paymentTerms;
+    private String fl_adrCopy;
+
     private String fl_loadingTime;
 
     private String fl_vendor;   // FK vendor id
@@ -44,7 +51,6 @@ public class FuelService {
     private List<String> fl_documents;
     private String fl_additionalNotes;
     private String fl_status; // processing, ongoing  {This is for ops team}
-    private String fl_payment; // Processing, Servicing, Invoiced, Payment received {This is for sales team}
 
 
 }

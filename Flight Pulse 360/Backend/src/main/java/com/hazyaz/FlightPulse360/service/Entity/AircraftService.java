@@ -1,14 +1,12 @@
-package com.hazyaz.FlightPulse360.service;
+package com.hazyaz.FlightPulse360.service.Entity;
 
 import com.hazyaz.FlightPulse360.model.Aircraft;
-import com.hazyaz.FlightPulse360.repository.AircraftRepository;
+import com.hazyaz.FlightPulse360.repository.Entity.AircraftRepository;
 import com.hazyaz.FlightPulse360.util.FieldsUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 

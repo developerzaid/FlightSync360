@@ -1,9 +1,7 @@
 package com.hazyaz.FlightPulse360.controller;
 
-import com.hazyaz.FlightPulse360.dto.UserLogin;
-import com.hazyaz.FlightPulse360.dto.UserRegistration;
 import com.hazyaz.FlightPulse360.model.Vendor;
-import com.hazyaz.FlightPulse360.service.VendorService;
+import com.hazyaz.FlightPulse360.service.Entity.VendorService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +21,12 @@ public class VendorController {
     @GetMapping("/all-vendor/{companyId}")
     public ResponseEntity<List<Vendor>> all_vendor(@PathVariable String companyId){
         return ResponseEntity.ok(vendorService.getAllVendor(companyId));
+    }
+
+    @Operation(tags = "ET: Vendor" ,description = "Allows to get single vendor")
+    @GetMapping("/vendor/{id}")
+    public ResponseEntity<Vendor> get_Single_vendor(@PathVariable String id){
+        return ResponseEntity.ok(vendorService.getSingleVendor(id));
     }
 
     // CONTROLLERS FOR SIGNING UP NEW USER

@@ -16,6 +16,12 @@ public class MasterTripController {
     @Autowired
     private MasterTripService masterTripService;
 
+    @Operation(tags = "Master" ,description = "add single master trip")
+    @PostMapping("/add-masterTrip")
+    public ResponseEntity<MasterTrip> add_singleMasterTrip(@RequestBody MasterTrip masterTrip) {
+        return ResponseEntity.ok(masterTripService.addMasterTrip(masterTrip));
+    }
+
     @Operation(tags = "Master" ,description = "get Single master trip")
     @GetMapping("/masterTrip/{tripId}")
     public ResponseEntity<MasterTrip> get_singleMasterTrip(@PathVariable String tripId) {

@@ -1,6 +1,7 @@
 package com.hazyaz.FlightPulse360.model.TS.GH;
 
 import com.hazyaz.FlightPulse360.model.Vendor;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 public class AircraftHandling {
 
+    @Column(name = "uxTripId", nullable = false)
     private String uxTripId; // Universal Trip ID for
 
     @Id
@@ -49,6 +51,5 @@ public class AircraftHandling {
     private List<String> ach_documents;
     private String ach_additionalNotes;
     private String ach_serviceStatus; // REQUESTED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
-    private String ach_payment; // Processing, Servicing, Invoiced, Payment received {This is for sales team}
 
 }

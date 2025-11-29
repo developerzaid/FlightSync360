@@ -1,4 +1,4 @@
-package com.hazyaz.FlightPulse360.repository;
+package com.hazyaz.FlightPulse360.repository.Entity;
 
 import com.hazyaz.FlightPulse360.model.Aircraft;
 import com.hazyaz.FlightPulse360.model.Client;

@@ -1,5 +1,6 @@
 package com.hazyaz.FlightPulse360.model.TS.GH;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 public class WaterService {
 
+    @Column(name = "uxTripId", nullable = false)
     private String uxTripId; // Universal Trip ID for
 
     @Id
@@ -26,6 +28,7 @@ public class WaterService {
 
     private String wts_serviceName;
 
+    private String wts_vendor; // FK to specific vendor
     // Potable Water Service
     private Boolean wts_waterServiceRequired;
     private Double wts_waterVolume; // liters (usually 50-200L for private jets)

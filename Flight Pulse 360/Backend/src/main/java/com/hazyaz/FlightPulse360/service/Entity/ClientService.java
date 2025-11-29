@@ -1,8 +1,7 @@
-package com.hazyaz.FlightPulse360.service;
+package com.hazyaz.FlightPulse360.service.Entity;
 
 import com.hazyaz.FlightPulse360.model.Client;
-import com.hazyaz.FlightPulse360.model.Crew;
-import com.hazyaz.FlightPulse360.repository.ClientRepository;
+import com.hazyaz.FlightPulse360.repository.Entity.ClientRepository;
 import com.hazyaz.FlightPulse360.util.FieldsUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,11 @@ public class ClientService {
 
     public List<Client> getAllClient(String CompanyId){
         return clientRepository.findAllByUxUniversalCompanyId(CompanyId);
+    }
+
+    public Client getSingleClient(String id){
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
     }
 
     public Client updateClient(String id, Map<String, Object> updates){

@@ -1,5 +1,6 @@
 package com.hazyaz.FlightPulse360.model.TS.GH;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 public class DeIcingService {
 
+    @Column(name = "uxTripId", nullable = false)
     private String uxTripId; // Universal Trip ID for
 
     @Id
@@ -23,6 +25,7 @@ public class DeIcingService {
         return "TPSRV-DIS";
     }
 
+    private String dis_vendor; // FK to specific vendor
     private String dis_serviceName;
     // De-icing Operations (Winter only)
     private String dis_fluidType; // TYPE_I, TYPE_IV
@@ -34,5 +37,4 @@ public class DeIcingService {
     private List<String> dis_documents;
     private String dis_additionalNotes;
     private String dis_serviceStatus; // REQUESTED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
-    private String dis_payment; // Processing, Servicing, Invoiced, Payment received {This is for sales team}
 }

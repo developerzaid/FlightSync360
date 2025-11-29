@@ -1,5 +1,6 @@
 package com.hazyaz.FlightPulse360.model.TS.GH;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 public class CateringService {
 
+    @Column(name = "uxTripId", nullable = false)
     private String uxTripId; // Universal Trip ID for
 
     @Id
@@ -25,6 +27,7 @@ public class CateringService {
 
     private String cs_serviceName;
 
+    private String cs_vendor; // FK to specific vendor
     // Catering for Private Jets
     private String cs_cateringCompany;
     private String cs_cateringContact;
@@ -38,6 +41,5 @@ public class CateringService {
     private List<String> cs_documents;
     private String cs_additionalNotes;
     private String cs_serviceStatus; // REQUESTED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
-    private String cs_payment; // Processing, Servicing, Invoiced, Payment received {This is for sales team}
 
 }

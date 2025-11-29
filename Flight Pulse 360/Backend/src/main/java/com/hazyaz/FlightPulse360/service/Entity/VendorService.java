@@ -1,8 +1,7 @@
-package com.hazyaz.FlightPulse360.service;
+package com.hazyaz.FlightPulse360.service.Entity;
 
-import com.hazyaz.FlightPulse360.model.Aircraft;
 import com.hazyaz.FlightPulse360.model.Vendor;
-import com.hazyaz.FlightPulse360.repository.VendorRepository;
+import com.hazyaz.FlightPulse360.repository.Entity.VendorRepository;
 import com.hazyaz.FlightPulse360.util.FieldsUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,10 @@ public class VendorService {
 
     public List<Vendor> getAllVendor(String CompanyId){
        return vendorRepository.findAllByUxUniversalCompanyId(CompanyId);
+    }
+    public Vendor getSingleVendor(String id){
+        return vendorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vendor not found"));
     }
 
     public Vendor addVendor(Vendor vendor){

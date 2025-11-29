@@ -1,14 +1,11 @@
 package com.hazyaz.FlightPulse360.controller;
 
-import com.hazyaz.FlightPulse360.dto.UserLogin;
 import com.hazyaz.FlightPulse360.model.Aircraft;
-import com.hazyaz.FlightPulse360.service.AircraftService;
+import com.hazyaz.FlightPulse360.service.Entity.AircraftService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
-import org.xml.sax.EntityResolver;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +15,6 @@ public class AircraftController {
 
     @Autowired
     AircraftService aircraftService;
-
 
     @Operation(tags = "ET: Aircraft" ,description = "Allows the user to add new aircraft")
     @PostMapping("/add-aircraft")
@@ -34,7 +30,7 @@ public class AircraftController {
     }
 
     @Operation(tags = "ET: Aircraft" ,description = "Allows to get single aircraft")
-    @PutMapping("/aircraft/{id}")
+    @GetMapping("/aircraft/{id}")
     public ResponseEntity<Aircraft> get_Single_aircraft(@PathVariable String id){
         return ResponseEntity.ok(aircraftService.getSingleAircraft(id));
     }
@@ -43,7 +39,6 @@ public class AircraftController {
     public ResponseEntity<Aircraft> update_aircraft(@PathVariable String id, @RequestBody Map<String,Object> updates){
         return ResponseEntity.ok(aircraftService.updateAircraft(id, updates));
     }
-
 
     @Operation(tags = "ET: Aircraft" ,description = "Allows the Delete aircraft")
     @DeleteMapping("/delete-aircraft/{id}")

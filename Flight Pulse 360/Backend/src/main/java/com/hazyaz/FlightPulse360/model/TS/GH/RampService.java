@@ -1,5 +1,6 @@
 package com.hazyaz.FlightPulse360.model.TS.GH;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,6 +16,7 @@ public class RampService {
 
 
 
+    @Column(name = "uxTripId", nullable = false)
     private String uxTripId; // Universal Trip ID for
 
     @Id
@@ -31,6 +33,7 @@ public class RampService {
     private String rps_groundHandlingServiceId; // FK to main TS service
     private String rps_serviceRequestId; // FK to main service request
 
+    private String rps_vendor; // FK to specific vendor
 
     private Integer rps_gpuDuration; // minutes
     private BigDecimal rps_gpuChargePerHour;

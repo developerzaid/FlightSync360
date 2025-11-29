@@ -1,13 +1,11 @@
 package com.hazyaz.FlightPulse360.controller;
 
-import com.hazyaz.FlightPulse360.dto.UserLogin;
 import com.hazyaz.FlightPulse360.model.Crew;
-import com.hazyaz.FlightPulse360.service.CrewService;
+import com.hazyaz.FlightPulse360.service.Entity.CrewService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -26,12 +24,20 @@ public class CrewController {
         return ResponseEntity.ok(crewService.getAllCrew(companyId));
     }
 
+    @Operation(tags = "ET: Crew" ,description = "Allows to get single Crew")
+    @GetMapping("/crew/{id}")
+    public ResponseEntity<Crew> get_Single_Crew(@PathVariable String id){
+        return ResponseEntity.ok(crewService.getSingleCrew(id));
+    }
+
+
     // CONTROLLERS adding new crew
     @Operation(tags = "ET: Crew" ,description = "add the new crews")
     @PostMapping("/add-crew")
     public ResponseEntity<Crew> add_crew(@RequestBody Crew crew) {
         return ResponseEntity.ok(crewService.addCrew(crew));
     }
+
 
     @Operation(tags = "ET: Crew" ,description = "Update the crews")
     @PutMapping("/update-crew/{id}")

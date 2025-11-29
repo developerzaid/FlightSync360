@@ -4,7 +4,6 @@ import {
 	X,
 	Edit,
 	Trash2,
-	ArrowLeft,
 	Calendar,
 	MapPin,
 	Gauge,
@@ -84,9 +83,11 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 	if (!aircraft) {
 		return (
 			<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-				<div className="bg-white rounded-2xl p-8">
+				<div className="bg-white rounded-xl p-6">
 					<div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-					<p className="mt-4 text-gray-600">Loading aircraft details...</p>
+					<p className="mt-3 text-sm text-gray-600">
+						Loading aircraft details...
+					</p>
 				</div>
 			</div>
 		);
@@ -96,118 +97,110 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 		{ id: "overview", name: "Overview", icon: Plane },
 		{ id: "specifications", name: "Specifications", icon: Gauge },
 		{ id: "documents", name: "Documents", icon: FileText },
-		{ id: "maintenance", name: "Maintenance", icon: Shield },
 	];
 
 	return (
 		<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
-			<div className="min-h-screen p-4 md:p-8">
+			<div className="min-h-screen p-4">
 				<div className="max-w-6xl mx-auto">
 					{/* Header */}
-					<div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-t-2xl shadow-2xl p-8 text-white">
-						<div className="flex items-center justify-between mb-6">
-							<button
-								onClick={onClose}
-								className="p-2 hover:bg-white/20 rounded-xl transition-all backdrop-blur-sm"
-							>
-								<ArrowLeft className="w-6 h-6" />
-							</button>
+					<div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-t-xl shadow-2xl p-5 text-white">
+						<div className="flex items-center justify-between mb-4">
+							<div className="flex items-center gap-3">
+								<div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+									<Plane className="w-6 h-6 text-white transform -rotate-45" />
+								</div>
+								<div>
+									<div className="flex items-center gap-2">
+										<h1 className="text-2xl font-bold">{aircraft.ac_TailNo}</h1>
+										<span
+											className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+												aircraft.status === "Active"
+													? "bg-green-500/20 text-green-100"
+													: "bg-orange-500/20 text-orange-100"
+											}`}
+										>
+											{aircraft.status}
+										</span>
+									</div>
+									<p className="text-base text-blue-100">
+										{aircraft.ac_Manufacturer} {aircraft.ac_Model}
+									</p>
+									<p className="text-blue-200 text-xs mt-1">
+										Year: {aircraft.ac_YearManufactured} • Type:{" "}
+										{aircraft.ac_Type}
+									</p>
+								</div>
+							</div>
 							<div className="flex gap-2">
 								<button
 									onClick={() => onEdit(aircraft)}
-									className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl transition-all backdrop-blur-sm flex items-center gap-2 font-semibold"
+									className="px-3 py-1.5 text-sm bg-white/20 hover:bg-white/30 rounded-lg transition-all backdrop-blur-sm flex items-center gap-1 font-medium"
 								>
 									<Edit className="w-4 h-4" />
 									Edit
 								</button>
 								<button
 									onClick={() => onDelete(aircraft.ac_Id)}
-									className="px-4 py-2 bg-red-500/80 hover:bg-red-600 rounded-xl transition-all backdrop-blur-sm flex items-center gap-2 font-semibold"
+									className="px-3 py-1.5 text-sm bg-red-500/80 hover:bg-red-600 rounded-lg transition-all backdrop-blur-sm flex items-center gap-1 font-medium"
 								>
 									<Trash2 className="w-4 h-4" />
 									Delete
 								</button>
 								<button
 									onClick={onClose}
-									className="p-2 hover:bg-white/20 rounded-xl transition-all backdrop-blur-sm"
+									className="p-1.5 hover:bg-white/20 rounded-lg transition-all backdrop-blur-sm"
 								>
-									<X className="w-6 h-6" />
+									<X className="w-5 h-5" />
 								</button>
-							</div>
-						</div>
-
-						<div className="flex items-center gap-6">
-							<div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-								<Plane className="w-10 h-10 text-white transform -rotate-45" />
-							</div>
-							<div className="flex-1">
-								<div className="flex items-center gap-3 mb-2">
-									<h1 className="text-4xl font-bold">{aircraft.ac_TailNo}</h1>
-									<span
-										className={`px-3 py-1 rounded-full text-sm font-semibold ${
-											aircraft.status === "Active"
-												? "bg-green-500/20 text-green-100"
-												: "bg-orange-500/20 text-orange-100"
-										}`}
-									>
-										{aircraft.status}
-									</span>
-								</div>
-								<p className="text-xl text-blue-100">
-									{aircraft.ac_Manufacturer} {aircraft.ac_Model}
-								</p>
-								<p className="text-blue-200 text-sm mt-2">
-									Year: {aircraft.ac_YearManufactured} • Type:{" "}
-									{aircraft.ac_Type}
-								</p>
 							</div>
 						</div>
 					</div>
 
 					{/* Quick Stats */}
-					<div className="bg-white shadow-lg px-8 py-6 border-b">
-						<div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+					<div className="bg-white shadow-lg px-5 py-4 border-b">
+						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 							<div className="text-center">
-								<div className="text-3xl font-bold text-blue-600 mb-1">
+								<div className="text-2xl font-bold text-blue-600 mb-0.5">
 									{aircraft.ac_PassengerCapacity}
 								</div>
-								<div className="text-sm text-gray-600">Passengers</div>
+								<div className="text-xs text-gray-600">Passengers</div>
 							</div>
 							<div className="text-center">
-								<div className="text-3xl font-bold text-green-600 mb-1">
+								<div className="text-2xl font-bold text-green-600 mb-0.5">
 									{aircraft.ac_MaxRange}
 								</div>
-								<div className="text-sm text-gray-600">Range (NM)</div>
+								<div className="text-xs text-gray-600">Range (NM)</div>
 							</div>
 							<div className="text-center">
-								<div className="text-3xl font-bold text-purple-600 mb-1">
+								<div className="text-2xl font-bold text-purple-600 mb-0.5">
 									{aircraft.ac_CruiseSpeed}
 								</div>
-								<div className="text-sm text-gray-600">Speed (kts)</div>
+								<div className="text-xs text-gray-600">Speed (kts)</div>
 							</div>
 							<div className="text-center">
-								<div className="text-3xl font-bold text-orange-600 mb-1">
+								<div className="text-2xl font-bold text-orange-600 mb-0.5">
 									{aircraft.ac_HomeBase}
 								</div>
-								<div className="text-sm text-gray-600">Home Base</div>
+								<div className="text-xs text-gray-600">Home Base</div>
 							</div>
 						</div>
 					</div>
 
 					{/* Tabs */}
-					<div className="bg-white shadow-lg px-8 border-b">
+					<div className="bg-white shadow-lg px-5 border-b">
 						<div className="flex gap-1">
 							{tabs.map((tab) => (
 								<button
 									key={tab.id}
 									onClick={() => setActiveTab(tab.id)}
-									className={`px-6 py-4 font-semibold transition-all flex items-center gap-2 ${
+									className={`px-4 py-2 text-sm font-bold transition-all flex items-center gap-2 ${
 										activeTab === tab.id
-											? "text-blue-600 border-b-3 border-blue-600"
-											: "text-gray-600 hover:text-gray-900 border-b-3 border-transparent"
+											? "text-blue-600 border-b-2 border-blue-600"
+											: "text-gray-600 hover:text-gray-900"
 									}`}
 								>
-									<tab.icon className="w-5 h-5" />
+									<tab.icon className="w-4 h-4" />
 									{tab.name}
 								</button>
 							))}
@@ -215,15 +208,15 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 					</div>
 
 					{/* Tab Content */}
-					<div className="bg-white rounded-b-2xl shadow-2xl p-8">
+					<div className="bg-white rounded-b-xl shadow-2xl p-5">
 						{/* Overview Tab */}
 						{activeTab === "overview" && (
-							<div className="space-y-8">
+							<div className="space-y-4">
 								<div>
-									<h3 className="text-xl font-bold text-gray-900 mb-4">
+									<h3 className="text-base font-bold text-gray-900 mb-3">
 										Basic Information
 									</h3>
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 										<InfoCard
 											icon={Plane}
 											label="Tail Number"
@@ -259,11 +252,11 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 
 								{aircraft.ac_Notes && (
 									<div>
-										<h3 className="text-xl font-bold text-gray-900 mb-4">
+										<h3 className="text-base font-bold text-gray-900 mb-3">
 											Additional Notes
 										</h3>
-										<div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
-											<p className="text-gray-700 whitespace-pre-wrap">
+										<div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+											<p className="text-sm text-gray-700 whitespace-pre-wrap">
 												{aircraft.ac_Notes}
 											</p>
 										</div>
@@ -274,12 +267,12 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 
 						{/* Specifications Tab */}
 						{activeTab === "specifications" && (
-							<div className="space-y-8">
+							<div className="space-y-4">
 								<div>
-									<h3 className="text-xl font-bold text-gray-900 mb-4">
+									<h3 className="text-base font-bold text-gray-900 mb-3">
 										Performance
 									</h3>
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 										<InfoCard
 											icon={Gauge}
 											label="Maximum Range"
@@ -309,10 +302,10 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 								</div>
 
 								<div>
-									<h3 className="text-xl font-bold text-gray-900 mb-4">
+									<h3 className="text-base font-bold text-gray-900 mb-3">
 										Registration & Insurance
 									</h3>
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 										<InfoCard
 											icon={Calendar}
 											label="Registration Date"
@@ -328,12 +321,12 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 									</div>
 
 									{aircraft.ac_InsuranceDetails && (
-										<div className="mt-6 bg-green-50 border-2 border-green-200 rounded-xl p-6">
-											<h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-												<Shield className="w-5 h-5 text-green-600" />
+										<div className="mt-3 bg-green-50 border-2 border-green-200 rounded-lg p-4">
+											<h4 className="text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
+												<Shield className="w-4 h-4 text-green-600" />
 												Insurance Details
 											</h4>
-											<p className="text-gray-700 whitespace-pre-wrap">
+											<p className="text-sm text-gray-700 whitespace-pre-wrap">
 												{aircraft.ac_InsuranceDetails}
 											</p>
 										</div>
@@ -345,43 +338,45 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 						{/* Documents Tab */}
 						{activeTab === "documents" && (
 							<div>
-								<div className="flex items-center justify-between mb-6">
-									<h3 className="text-xl font-bold text-gray-900">
-										Aircraft Documents
+								<div className="flex items-center justify-between mb-4">
+									<h3 className="text-base font-bold text-gray-900">
+										Aircraft Documents ({aircraft.documents.length})
 									</h3>
-									<button className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all flex items-center gap-2 font-semibold">
-										<Download className="w-5 h-5" />
+									<button className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all flex items-center gap-2 font-medium">
+										<Download className="w-4 h-4" />
 										Download All
 									</button>
 								</div>
 
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 									{aircraft.documents.map((doc) => (
 										<div
 											key={doc.id}
-											className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border-2 border-gray-200 hover:border-blue-300 transition-all group"
+											className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-blue-300 transition-all group"
 										>
-											<div className="flex items-center gap-3 flex-1">
-												<div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-													<FileText className="w-6 h-6 text-blue-600" />
+											<div className="flex items-center gap-3 flex-1 min-w-0">
+												<div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+													<FileText className="w-5 h-5 text-blue-600" />
 												</div>
 												<div className="flex-1 min-w-0">
-													<p className="font-semibold text-gray-900 truncate">
+													<p className="text-sm font-bold text-gray-900 truncate">
 														{doc.name}
 													</p>
-													<div className="flex items-center gap-2 text-sm text-gray-500">
-														<span>{doc.category}</span>
+													<div className="flex items-center gap-2 text-xs text-gray-500">
+														<span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded font-medium">
+															{doc.category}
+														</span>
 														<span>•</span>
 														<span>{doc.size}</span>
 													</div>
 												</div>
 											</div>
-											<div className="flex gap-2">
-												<button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
-													<Eye className="w-5 h-5" />
+											<div className="flex gap-1">
+												<button className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+													<Eye className="w-4 h-4" />
 												</button>
-												<button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all">
-													<Download className="w-5 h-5" />
+												<button className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-lg transition-all">
+													<Download className="w-4 h-4" />
 												</button>
 											</div>
 										</div>
@@ -389,38 +384,22 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 								</div>
 
 								{aircraft.documents.length === 0 && (
-									<div className="text-center py-12">
-										<div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-											<FileText className="w-8 h-8 text-gray-400" />
+									<div className="text-center py-8">
+										<div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+											<FileText className="w-6 h-6 text-gray-400" />
 										</div>
-										<p className="text-gray-600">No documents uploaded yet</p>
+										<p className="text-sm text-gray-600">
+											No documents uploaded yet
+										</p>
 									</div>
 								)}
-							</div>
-						)}
-
-						{/* Maintenance Tab */}
-						{activeTab === "maintenance" && (
-							<div className="text-center py-12">
-								<div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-									<Shield className="w-8 h-8 text-gray-400" />
-								</div>
-								<h3 className="text-xl font-bold text-gray-900 mb-2">
-									Maintenance Logs
-								</h3>
-								<p className="text-gray-600 mb-6">
-									Maintenance tracking coming soon
-								</p>
-								<button className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-semibold">
-									Schedule Maintenance
-								</button>
 							</div>
 						)}
 					</div>
 
 					{/* Footer */}
-					<div className="bg-gray-50 rounded-b-2xl p-6 mt-px">
-						<div className="flex items-center justify-between text-sm text-gray-500">
+					<div className="bg-gray-50 rounded-b-xl p-4 mt-px">
+						<div className="flex items-center justify-between text-xs text-gray-500">
 							<div>
 								Aircraft ID: <span className="font-mono">{aircraft.ac_Id}</span>
 							</div>
@@ -441,13 +420,13 @@ const AircraftDetails = ({ aircraftId, onClose, onEdit, onDelete }) => {
 };
 
 const InfoCard = ({ icon: Icon, label, value }) => (
-	<div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border-2 border-gray-200">
-		<div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-			<Icon className="w-5 h-5 text-blue-600" />
+	<div className="flex items-start gap-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
+		<div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+			<Icon className="w-4 h-4 text-blue-600" />
 		</div>
 		<div className="flex-1 min-w-0">
-			<p className="text-sm text-gray-600 mb-1">{label}</p>
-			<p className="text-base font-semibold text-gray-900">{value || "N/A"}</p>
+			<p className="text-xs text-gray-600 mb-0.5">{label}</p>
+			<p className="text-sm font-bold text-gray-900">{value || "N/A"}</p>
 		</div>
 	</div>
 );

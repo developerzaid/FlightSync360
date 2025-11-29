@@ -1,9 +1,7 @@
 package com.hazyaz.FlightPulse360.controller;
 
 import com.hazyaz.FlightPulse360.model.Client;
-import com.hazyaz.FlightPulse360.model.Crew;
-import com.hazyaz.FlightPulse360.repository.ClientRepository;
-import com.hazyaz.FlightPulse360.service.ClientService;
+import com.hazyaz.FlightPulse360.service.Entity.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,13 @@ public class ClientController {
     @GetMapping("/all-client/{companyId}")
     public ResponseEntity<List<Client>> all_client(@PathVariable String companyId) {
         return ResponseEntity.ok(clientService.getAllClient(companyId));
+    }
+
+
+    @Operation(tags = "ET: Client" ,description = "Allows to get single Client")
+    @GetMapping("/clients/{id}")
+    public ResponseEntity<Client> get_Single_Client(@PathVariable String id){
+        return ResponseEntity.ok(clientService.getSingleClient(id));
     }
 
     // CONTROLLERS adding new crew

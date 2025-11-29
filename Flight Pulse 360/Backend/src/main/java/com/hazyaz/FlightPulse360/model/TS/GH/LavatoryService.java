@@ -1,5 +1,6 @@
 package com.hazyaz.FlightPulse360.model.TS.GH;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ import java.util.List;
 public class LavatoryService {
 
 
+    @Column(name = "uxTripId", nullable = false)
     private String uxTripId; // Universal Trip ID for
 
     @Id
@@ -24,7 +26,7 @@ public class LavatoryService {
     }
 
     private String ls_serviceName;
-
+private String ls_vendor; // FK to specific vendor
     // Lavatory Operations
     private Boolean ls_lavaServiceRequired;
     private Integer ls_numberOfLavatories; // Usually 1-2 for private jets

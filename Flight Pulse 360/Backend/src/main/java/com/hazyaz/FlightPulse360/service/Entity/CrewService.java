@@ -1,8 +1,7 @@
-package com.hazyaz.FlightPulse360.service;
+package com.hazyaz.FlightPulse360.service.Entity;
 
 import com.hazyaz.FlightPulse360.model.Crew;
-import com.hazyaz.FlightPulse360.model.Vendor;
-import com.hazyaz.FlightPulse360.repository.CrewRepository;
+import com.hazyaz.FlightPulse360.repository.Entity.CrewRepository;
 import com.hazyaz.FlightPulse360.util.FieldsUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,11 @@ public class CrewService {
 
     public List<Crew> getAllCrew(String CompanyId){
        return crewRepository.findAllByUxUniversalCompanyId(CompanyId);
+    }
+
+    public Crew getSingleCrew(String id){
+        return crewRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Crew not found"));
     }
 
     public Crew updateCrew(String id, Map<String, Object> updates){
