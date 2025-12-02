@@ -13,8 +13,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
 public class MasterTrip {
+
+        @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+        @JoinColumn(name = "aircraft_id")
+        private Aircraft aircraft;
+
+        // Same for Client
+        @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+        @JoinColumn(name = "client_id")
+        private Client clients;
+
+        // Keep ALL for owned collections
+        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+        @JoinColumn(name = "trip_id")
+        private List<Passenger> passenger;
+
+        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+        @JoinColumn(name = "trip_id")
+        private List<Crew> crew;
 
 
         @Id
@@ -41,57 +58,11 @@ public class MasterTrip {
 
         private String mt_duration;
 
-        // ---------- MULTI LEG ----------
-//        @OneToMany(cascade = CascadeType.ALL)
-//        @JoinColumn(name = "uxTripId")
-//        private List<TripLeg> mt_legs;
-
-        // ---------- LINKED OBJECTS ----------
-
-        @ManyToOne(cascade = CascadeType.ALL)
-        private Client clients;
-
-        @OneToMany(cascade = CascadeType.ALL)
-        private List<Passenger> passenger;
-
-        @OneToMany(cascade = CascadeType.ALL)
-        private List<Crew> crew;
-
-        @ManyToOne(cascade = CascadeType.ALL)
-        private Aircraft aircraft;
 
 
-        // ---------- SERVICES ----------
 
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private CrewConcierge crewConcierge;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private FuelService fuelService;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private PassengerConcierge passengerConcierge;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private PermitsAndClearance permitsAndClearance;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private AircraftHandling aircraftHandling;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private CateringService cateringService;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private DeIcingService deIcingService;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private LavatoryService lavatoryService;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private RampService rampService;
-//
-//        @ManyToOne(cascade = CascadeType.ALL)
-//        private WaterService waterService;
+        // ... rest of code
+
 
         //---------SERVICE REF ID ----------------
         // Store just the service IDs - services live in their own tables
@@ -116,5 +87,269 @@ public class MasterTrip {
 
         public String getPrefix() {
                 return "MSTR";
+        }
+
+        public String getUxTripId() {
+                return uxTripId;
+        }
+
+        public void setUxTripId(String uxTripId) {
+                this.uxTripId = uxTripId;
+        }
+
+        public String getUxCompanyId() {
+                return uxCompanyId;
+        }
+
+        public void setUxCompanyId(String uxCompanyId) {
+                this.uxCompanyId = uxCompanyId;
+        }
+
+        public String getMt_tripNumber() {
+                return mt_tripNumber;
+        }
+
+        public void setMt_tripNumber(String mt_tripNumber) {
+                this.mt_tripNumber = mt_tripNumber;
+        }
+
+        public String getMt_flightNumber() {
+                return mt_flightNumber;
+        }
+
+        public void setMt_flightNumber(String mt_flightNumber) {
+                this.mt_flightNumber = mt_flightNumber;
+        }
+
+        public String getMt_tripType() {
+                return mt_tripType;
+        }
+
+        public void setMt_tripType(String mt_tripType) {
+                this.mt_tripType = mt_tripType;
+        }
+
+        public String getMt_purpose() {
+                return mt_purpose;
+        }
+
+        public void setMt_purpose(String mt_purpose) {
+                this.mt_purpose = mt_purpose;
+        }
+
+        public String getMt_status() {
+                return mt_status;
+        }
+
+        public void setMt_status(String mt_status) {
+                this.mt_status = mt_status;
+        }
+
+        public String getMt_fromAirport() {
+                return mt_fromAirport;
+        }
+
+        public void setMt_fromAirport(String mt_fromAirport) {
+                this.mt_fromAirport = mt_fromAirport;
+        }
+
+        public String getMt_toAirport() {
+                return mt_toAirport;
+        }
+
+        public void setMt_toAirport(String mt_toAirport) {
+                this.mt_toAirport = mt_toAirport;
+        }
+
+        public LocalDateTime getMt_scheduledDepartureUtc() {
+                return mt_scheduledDepartureUtc;
+        }
+
+        public void setMt_scheduledDepartureUtc(LocalDateTime mt_scheduledDepartureUtc) {
+                this.mt_scheduledDepartureUtc = mt_scheduledDepartureUtc;
+        }
+
+        public LocalDateTime getMt_scheduledDepartureLocal() {
+                return mt_scheduledDepartureLocal;
+        }
+
+        public void setMt_scheduledDepartureLocal(LocalDateTime mt_scheduledDepartureLocal) {
+                this.mt_scheduledDepartureLocal = mt_scheduledDepartureLocal;
+        }
+
+        public LocalDateTime getMt_scheduledArrivalUtc() {
+                return mt_scheduledArrivalUtc;
+        }
+
+        public void setMt_scheduledArrivalUtc(LocalDateTime mt_scheduledArrivalUtc) {
+                this.mt_scheduledArrivalUtc = mt_scheduledArrivalUtc;
+        }
+
+        public LocalDateTime getMt_scheduledArrivalLocal() {
+                return mt_scheduledArrivalLocal;
+        }
+
+        public void setMt_scheduledArrivalLocal(LocalDateTime mt_scheduledArrivalLocal) {
+                this.mt_scheduledArrivalLocal = mt_scheduledArrivalLocal;
+        }
+
+        public String getMt_duration() {
+                return mt_duration;
+        }
+
+        public void setMt_duration(String mt_duration) {
+                this.mt_duration = mt_duration;
+        }
+
+        public Client getClients() {
+                return clients;
+        }
+
+        public void setClients(Client clients) {
+                this.clients = clients;
+        }
+
+        public List<Passenger> getPassenger() {
+                return passenger;
+        }
+
+        public void setPassenger(List<Passenger> passenger) {
+                this.passenger = passenger;
+        }
+
+        public List<Crew> getCrew() {
+                return crew;
+        }
+
+        public void setCrew(List<Crew> crew) {
+                this.crew = crew;
+        }
+
+        public Aircraft getAircraft() {
+                return aircraft;
+        }
+
+        public void setAircraft(Aircraft aircraft) {
+                this.aircraft = aircraft;
+        }
+
+        public String getCrewConciergeId() {
+                return crewConciergeId;
+        }
+
+        public void setCrewConciergeId(String crewConciergeId) {
+                this.crewConciergeId = crewConciergeId;
+        }
+
+        public String getFuelServiceId() {
+                return fuelServiceId;
+        }
+
+        public void setFuelServiceId(String fuelServiceId) {
+                this.fuelServiceId = fuelServiceId;
+        }
+
+        public String getPassengerConciergeId() {
+                return passengerConciergeId;
+        }
+
+        public void setPassengerConciergeId(String passengerConciergeId) {
+                this.passengerConciergeId = passengerConciergeId;
+        }
+
+        public String getPermitsAndClearanceId() {
+                return permitsAndClearanceId;
+        }
+
+        public void setPermitsAndClearanceId(String permitsAndClearanceId) {
+                this.permitsAndClearanceId = permitsAndClearanceId;
+        }
+
+        public String getAircraftHandlingId() {
+                return aircraftHandlingId;
+        }
+
+        public void setAircraftHandlingId(String aircraftHandlingId) {
+                this.aircraftHandlingId = aircraftHandlingId;
+        }
+
+        public String getCateringServiceId() {
+                return cateringServiceId;
+        }
+
+        public void setCateringServiceId(String cateringServiceId) {
+                this.cateringServiceId = cateringServiceId;
+        }
+
+        public String getDeIcingServiceId() {
+                return deIcingServiceId;
+        }
+
+        public void setDeIcingServiceId(String deIcingServiceId) {
+                this.deIcingServiceId = deIcingServiceId;
+        }
+
+        public String getLavatoryServiceId() {
+                return lavatoryServiceId;
+        }
+
+        public void setLavatoryServiceId(String lavatoryServiceId) {
+                this.lavatoryServiceId = lavatoryServiceId;
+        }
+
+        public String getRampServiceId() {
+                return rampServiceId;
+        }
+
+        public void setRampServiceId(String rampServiceId) {
+                this.rampServiceId = rampServiceId;
+        }
+
+        public String getWaterServiceId() {
+                return waterServiceId;
+        }
+
+        public void setWaterServiceId(String waterServiceId) {
+                this.waterServiceId = waterServiceId;
+        }
+
+        public String getMt_additionalNotes() {
+                return mt_additionalNotes;
+        }
+
+        public void setMt_additionalNotes(String mt_additionalNotes) {
+                this.mt_additionalNotes = mt_additionalNotes;
+        }
+
+        public String getMt_additionalDocuments() {
+                return mt_additionalDocuments;
+        }
+
+        public void setMt_additionalDocuments(String mt_additionalDocuments) {
+                this.mt_additionalDocuments = mt_additionalDocuments;
+        }
+
+        public String getMt_dispatcherNotes() {
+                return mt_dispatcherNotes;
+        }
+
+        public void setMt_dispatcherNotes(String mt_dispatcherNotes) {
+                this.mt_dispatcherNotes = mt_dispatcherNotes;
+        }
+
+        public String getMt_safetyNotes() {
+                return mt_safetyNotes;
+        }
+
+        public void setMt_safetyNotes(String mt_safetyNotes) {
+                this.mt_safetyNotes = mt_safetyNotes;
+        }
+
+        public String getMt_regulatoryNotes() {
+                return mt_regulatoryNotes;
+        }
+
+        public void setMt_regulatoryNotes(String mt_regulatoryNotes) {
+                this.mt_regulatoryNotes = mt_regulatoryNotes;
         }
 }

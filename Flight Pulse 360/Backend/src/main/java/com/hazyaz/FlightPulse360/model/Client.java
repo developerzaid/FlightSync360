@@ -13,7 +13,7 @@ public class Client {
     @Id
     @GeneratedValue(generator = "Id-Generator")
     @GenericGenerator(name = "Id-Generator", strategy = "com.hazyaz.FlightPulse360.util.UniqueIdGenerator")
-    private String ct_id;
+    private String ctId;
 
     private String uxUniversalCompanyId;
 

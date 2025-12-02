@@ -40,7 +40,7 @@ public class MasterTripService {
     @Transactional
     public MasterTrip createMasterTrip(MasterTripRequest request) {
 
-        // 1. Create and save basic MasterTrip
+// 1. Create and save basic MasterTrip
         MasterTrip trip = new MasterTrip();
         trip.setUxCompanyId(request.getUxCompanyId());
         trip.setMt_tripNumber(request.getMt_tripNumber());

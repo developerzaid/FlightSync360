@@ -13,7 +13,7 @@ public class Vendor {
     @Id
     @GeneratedValue(generator = "Id-Generator")
     @GenericGenerator(name = "Id-Generator", strategy = "com.hazyaz.FlightPulse360.util.UniqueIdGenerator")
-    private String vn_Id;
+    private String vnId;
 
     private String uxUniversalCompanyId;
 

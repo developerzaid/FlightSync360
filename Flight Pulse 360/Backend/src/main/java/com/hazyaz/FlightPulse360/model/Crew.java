@@ -14,7 +14,7 @@ public class Crew {
     @Id
     @GeneratedValue(generator = "Id-Generator")
     @GenericGenerator(name = "Id-Generator", strategy = "com.hazyaz.FlightPulse360.util.UniqueIdGenerator")
-    private String cr_id;
+    private String crId;
 
     private String uxUniversalCompanyId;
 
